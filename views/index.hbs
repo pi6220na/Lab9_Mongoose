@@ -11,12 +11,12 @@
 </div>
 
 
-<div class="messages">
-    {{#if messages}}
-        <p class="error_msg">{{messages.error}}</p>
-        <p class="info_msg">{{messages.info}}</p>
-    {{/if}}
-</div>
+<div class="messages">
+    {{#if messages}}
+        <p class="error_msg">{{messages.error}}</p>
+        <p class="info_msg">{{messages.info}}</p>
+    {{/if}}
+</div>
 
 
 <div class="tasklist">
@@ -41,12 +41,12 @@
 </div>
 
 
-<div class="alldone">
-    {{#if tasks}}
+<div class="alldone">
+    {{#if tasks}}
         <form action="/alldone" method="POST">
             <input class="all_done_button" type="submit" value="Everything is done!">
-        </form>
-    {{/if}}
+        </form>
+    {{/if}}
 </div>
 
 
