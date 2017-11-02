@@ -24,7 +24,7 @@ a {
   padding-bottom: 20px;
 }
 
-.delete_form, .done_form .deleteDone_form{
+.delete_form, .done_form {
   display: inline;
 }
 

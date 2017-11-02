@@ -148,32 +148,21 @@ router.post('/alldone', function(req, res, next) {
 /* POST all completed tasks done */
 router.post('/deleteDone', function(req, res, next) {
 
-    Task.deleteMany( { _id : req.body._id } )
+    Task.deleteMany( {completed : true} )
         .then( (result) => {
 
-            if (result.deletedCount === 1) {  // one task document deleted
-                res.redirect('/');
+            console.log("How many documents were modified? ", result.n);
+            req.flash('info', 'All completed tasks deleted!');
 
-            } else {
-                // The task was not found. Report 404 error.
-                res.status(404).send('Error deleting task: not found');
-            }
+            res.redirect('/');
+
+
         })
         .catch((err) => {
 
             next(err);   // Will handle invalid ObjectIDs or DB errors.
         });
 
-
-    Task.updateMany( { completed : false } , { $set : { completed : true} } )
-        .then( (result) => {
-            console.log("How many documents were modified? ", result.n);
-            req.flash('info', 'All completed tasks deleted!');
-            res.redirect('/');
-        })
-        .catch( (err) => {
-            next(err);
-        })
 
 });
 

@@ -10,15 +10,14 @@
     </div>
 </ul>
 
-<div class="taskinfo">
-    <!-- {{#if task.completed}} -->
+<div class="taskdone">
+
 
         <form action="/deleteDone" method="POST" class="deleteDone_form">
-            <input type="hidden" name="_id" value="{{task._id}}">
             <input class="deleteDone_button" type="submit" name="deleteDone" value="deleteDone">
         </form>
 
-    <!-- {{/if}} -->
+
 
 </div>
 
