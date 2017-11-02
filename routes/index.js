@@ -3,6 +3,8 @@ var ObjectID = require('mongodb').ObjectId;
 var router = express.Router();
 var Task = require('../models/task');
 
+var d = new Date();
+
 
 ///* GET home page. */
 //router.get('/', function(req, res, next) {
@@ -57,7 +59,7 @@ router.post('/add', function(req, res, next){
                 next(err);   // most likely to be a database error.
             });
             */
-        new Task( { text: req.body.text, completed: false} ).save()
+        new Task( { text: req.body.text, completed: false, dateCreated: d, dateCompleted: null} ).save()
             .then((newTask) => {
             console.log('The new task created is: ', newTask);
             res.redirect('/');
@@ -73,7 +75,7 @@ router.post('/add', function(req, res, next){
 /* POST task done */
 router.post('/done', function(req, res, next){
 
-    Task.findOneAndUpdate( {_id: req.body._id}, {$set: {completed: true}} )
+    Task.findOneAndUpdate( {_id: req.body._id}, {$set: {completed: true, dateCompleted: d}} )
         .then((updatedTask) => {
             if (updatedTask) {   // updatedTask is the document *before* the update
                 res.redirect('/')  // One thing was updated. Redirect to home
@@ -131,7 +133,7 @@ router.post('/alldone', function(req, res, next) {
         })
      */
 
-     Task.updateMany( { completed : false } , { $set : { completed : true} } )
+     Task.updateMany( { completed : false } , { $set : { completed : true, dateCompleted: d} } )
      .then( (result) => {
      console.log("How many documents were modified? ", result.n);
      req.flash('info', 'All tasks marked as done!');
@@ -140,6 +142,38 @@ router.post('/alldone', function(req, res, next) {
      .catch( (err) => {
      next(err);
      })
+
+});
+
+/* POST all completed tasks done */
+router.post('/deleteDone', function(req, res, next) {
+
+    Task.deleteMany( { _id : req.body._id } )
+        .then( (result) => {
+
+            if (result.deletedCount === 1) {  // one task document deleted
+                res.redirect('/');
+
+            } else {
+                // The task was not found. Report 404 error.
+                res.status(404).send('Error deleting task: not found');
+            }
+        })
+        .catch((err) => {
+
+            next(err);   // Will handle invalid ObjectIDs or DB errors.
+        });
+
+
+    Task.updateMany( { completed : false } , { $set : { completed : true} } )
+        .then( (result) => {
+            console.log("How many documents were modified? ", result.n);
+            req.flash('info', 'All completed tasks deleted!');
+            res.redirect('/');
+        })
+        .catch( (err) => {
+            next(err);
+        })
 
 });
 
@@ -259,7 +293,7 @@ router.get('/task/:_id', function(req, res, next) {
     Task.findOne({_id: req.params._id} )
         .then( (task) => {
             if (task) {
-                res.render('task', {title: 'Task', task: task});
+                res.render('task', {title: 'Task', task: task,});
             } else {
                 res.status(404).send('Task not found');
             }
