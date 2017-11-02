@@ -24,11 +24,11 @@ a {
   padding-bottom: 20px;
 }
 
-.delete_form, .done_form {
+.delete_form, .done_form .deleteDone_form{
   display: inline;
 }
 
-.done_button {
+.done_button .deleteDone_button{
   background-color: aqua;
 }
 

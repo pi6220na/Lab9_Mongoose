@@ -1,11 +1,24 @@
 <ul>
-<div class="tasklist">
+    <div class="tasklist">
 
-    {{#each tasks}}
-        <p>{{@index}}: <a href="task/{{this._id}}">{{this.text}}</a></p>
-        <li>{{this.text}}</li>
-    {{else}}
-        <P>No tasks have been completed!</P>
-    {{/each}}
-</div>
+        {{#each tasks}}
+            <p>{{@index}}: <a href="task/{{this._id}}">{{this.text}}</a></p>
+            <li>{{this.text}} Date Created: {{this.dateCreated}} Date Completed: {{this.dateCompleted}}</li>
+        {{else}}
+            <P>No tasks have been completed!</P>
+        {{/each}}
+    </div>
 </ul>
+
+<div class="taskinfo">
+    <!-- {{#if task.completed}} -->
+
+        <form action="/deleteDone" method="POST" class="deleteDone_form">
+            <input type="hidden" name="_id" value="{{task._id}}">
+            <input class="deleteDone_button" type="submit" name="deleteDone" value="deleteDone">
+        </form>
+
+    <!-- {{/if}} -->
+
+</div>
+

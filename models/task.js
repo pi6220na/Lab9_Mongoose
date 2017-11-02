@@ -7,7 +7,9 @@ var Schema = mongoose.Schema;
 //define your schema
 var taskSchema = new Schema( {
     text: String,
-    completed: Boolean
+    completed: Boolean,
+    dateCreated: Date,
+    dateCompleted: Date
 });
 
 // compile taskSchema into Mongoose model object
