@@ -3,7 +3,7 @@ var ObjectID = require('mongodb').ObjectId;
 var router = express.Router();
 var Task = require('../models/task');
 
-var d = new Date();
+
 
 
 ///* GET home page. */
@@ -42,6 +42,8 @@ router.get('/', function(req, res, next) {
 /* POST new task */
 router.post('/add', function(req, res, next){
 
+    var d = new Date();
+
     if (!req.body || !req.body.text) {
         //no task text info, redirect to home page with flash message
         req.flash('error', 'please enter a task');
@@ -74,6 +76,8 @@ router.post('/add', function(req, res, next){
 
 /* POST task done */
 router.post('/done', function(req, res, next){
+
+    var d = new Date();
 
     Task.findOneAndUpdate( {_id: req.body._id}, {$set: {completed: true, dateCompleted: d}} )
         .then((updatedTask) => {
@@ -123,6 +127,8 @@ router.post('/done', function(req, res, next){
 /* POST all tasks done */
 router.post('/alldone', function(req, res, next) {
 
+    var d = new Date();
+
     /*
     req.tasks.updateMany( { completed : false } , { $set : { completed : true}} )
         .then( (result) => {
@@ -151,7 +157,8 @@ router.post('/deleteDone', function(req, res, next) {
     Task.deleteMany( {completed : true} )
         .then( (result) => {
 
-            console.log("How many documents were modified? ", result.n);
+            /* https://stackoverflow.com/questions/33430851/iterate-over-result-returned-from-mongodb-in-nodejs */
+            console.log("How many documents were modified? ", result.result.n);
             req.flash('info', 'All completed tasks deleted!');
 
             res.redirect('/');
